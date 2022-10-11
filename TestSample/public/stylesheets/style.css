@@ -1,0 +1,95 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+h
+{
+  font-size: 30px;
+  color: rgb(25, 23, 23);
+}
+
+
+/* .form-1
+{
+  padding: 10px;
+  border: 2px solid black;
+}
+
+.form-2
+{
+  display: flex;
+  flex-direction: column;
+} */
+
+form
+{
+  display: flex;
+  flex-direction: column;
+  margin: 15px 00;
+}
+input, select
+{
+  padding: 6px;
+ margin: 6px 00;
+}
+
+
+.main-div
+{
+  width: 500px;
+  margin: 0 auto;
+}
+
+.info-div
+{
+  border: 3px solid rgb(232, 89, 89);
+  width: 440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+.div-inside
+{
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(181, 239, 241);
+  color: black;
+  margin: 6px 00;
+  justify-content: space-between;
+}
+
+img
+{
+width: 100%;
+height: 100%;
+}
+
+.div-info-1
+{
+  width: 40%;
+}
+
+.div-info-2
+{
+  width: 55%;
+}
+
+.button
+{
+  background-color: #00B7FF;
+  border: none;
+}
+
+.container
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

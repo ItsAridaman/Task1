@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="container">
+
+
+        <section class="section-1">
+            <div class="main-div">
+                <h>
+                    Step-1
+                </h>
+                <div class="form-1">
+                    <form action="/Addpart1" method="post">
+                        <label>City Name</label>
+                        <input type="text" placeholder="type city name here.." Name="Cityname">
+                        <input type="file" id="Image" name="Image">
+                        <input class="button" type="submit">
+                    </form>
+                </div>
+
+                <h>Step-2</h>
+
+                <div class="form-2">
+                    <form action="/Addpart2" method="post">
+                        <label>Name</label>
+                        <input type="text" name="Name" placeholder="type your name">
+
+                        <label>City</label>
+                        <select name="City">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Agra">Agra</option>
+                            <option value="Lucknow">Lucknow</option>
+                            <option value="Banglore">Banglore</option>
+                        </select>
+
+                        <label>Phone number</label>
+                        <input type="number" name="Name" placeholder="type your name">
+
+                        <label>Sallary</label>
+                        <input type="number" name="Name" placeholder="your name">
+
+                        <input type="submit">
+
+                    </form>
+
+                </div>
+
+                <div class="form-1">
+                    <form action="/Addpart3" method="post">
+
+                        <label>City</label>
+                        <select name="City">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Agra">Agra</option>
+                            <option value="Lucknow">Lucknow</option>
+                            <option value="Banglore">Banglore</option>
+                        </select>
+                        <input type="submit">
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="info-div">
+            <% result.forEach((value)=>{ %>
+                <div class="div-inside">
+                    <div class="div-info-1">
+                        CityName: <%= value.Cityname %>
+
+                    </div>
+                    <div class="div-info-2">
+                        <img src="/images/<%= value.Image %>" alt="myimage">
+
+                    </div>
+
+                </div>
+                <% }) %>
+        </section>
+    </div>
+</body>
+
+</html>
