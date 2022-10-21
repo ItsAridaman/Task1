@@ -9,7 +9,6 @@ var AdminDetails = new Schema(
         name: { type: String, required: true },
         email: { type: String, required:true,match:/@/,lowercase:true, trim:true },
         password: { type: String, required: true, minlength: 5, maxlength: 9},
-        confirmpassword: { type: String, required: true }
     }
 )
 
@@ -37,9 +36,9 @@ AdminDetails.pre('save', function (next) {
 
 
 
-AdminDetails.methods.verifypassword = async function (password) {
+AdminDetails.methods.verifypassword = function (password) {
     try {
-        var result = await bcrypt.compare(password, this.password);
+        var result = bcrypt.compare(password, this.password);
         return result;
     }
     catch (error) {
@@ -59,16 +58,6 @@ AdminDetails.methods.signToken =function () {
         return error;
     }
 }
-
-// AdminDetails.methods.userJSON = function (token) {
-//     return {
-//         name: this.name,
-//         email: this.email,
-//         role: this.role,
-//         token: token
-//     }
-// }
-
 
 
 module.exports = mongoose.model('Admin', AdminDetails);

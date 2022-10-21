@@ -5,7 +5,6 @@ var admin = require('../Models/AdminDetails');
 
 
 
-/* GET home page. */
 router.get('/Home', (req, res) => {
   res.render('Homepage.ejs')
 })
@@ -17,8 +16,7 @@ router.get('/signup', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-  if(req.body.password===req.body.confirmpassword)
-  {
+  if (req.body.password === req.body.confirmpassword) {
     admin.create(req.body, (err, success) => {
       if (err) console.log(err);
       console.log(req.body);
@@ -27,12 +25,11 @@ router.post('/signup', (req, res) => {
       res.redirect('/login')
     })
   }
-  else
-  {
+  else {
     req.flash('error', 'Passwords mismatch');
     return res.redirect('/signup');
   }
- 
+
 })
 
 router.get('/login', (req, res) => {
@@ -69,29 +66,9 @@ router.post('/login', (req, res) => {
 
       if ((user.password) == password) {
         console.log("password match")
-        var token =  user.signToken();
+        var token = user.signToken();
         console.log(token)
         res.redirect('/Adminpanel')
-
-        // if (err) console.log(err);
-        // console.log(req.body);
-        // if (!req.session.adminId) {
-        //   console.log(req.session);
-        //   console.log("no session created");
-        //   req.session.adminId = user._id;
-        //   req.session.cart = [];
-        //   return res.redirect('/AdminPanel');
-        // }
-        // else if (req.session.userId) {
-        //   console.log("session already created");
-        //   console.log(req.session.cart);
-        //   console.log("hi 1");
-        //   console.log(req.session);
-        //   return res.redirect('/AdminPanel');
-        // }
-
-
-
 
       }
       else {
@@ -155,42 +132,18 @@ router.get('/logout', (req, res) => {
 
 
 router.get('/dashboard/filter', (req, res) => {
-  
+
   var username = req.query.username;
   console.log(username);
-   users.find({ firstname: new RegExp(username, 'i') }, (err,result)=>
-  {
+  users.find({ firstname: new RegExp(username, 'i') }, (err, result) => {
     console.log("go go");
     console.log(result);
-    if(err) console.log(err);
-   return res.render('AdminPanel.ejs', {result:result});
+    if (err) console.log(err);
+    return res.render('AdminPanel.ejs', { result: result });
   }
   )
 })
-    
-    
 
-// router.get('/Home', (req, res) => {
-//   user.find({}, req.body, (err, result) => {
-//     console.log("working...");
-//     console.log(result);
-//     res.render('Homepage.ejs', { result: result })
-//   })
-
-//   // res.render('Homepage.ejs');
-// });
-
-// router.post('/Addpart1', (req, res) => {
-//   user.create(req.body, (err, result) => {
-
-//     console.log("user created...");
-//     res.redirect('/Home')
-
-
-//   }
-//   )
-
-// });
 
 
 
