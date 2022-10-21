@@ -1,31 +1,196 @@
 var express = require('express');
 var router = express.Router();
-var user = require('../Models/UserDetail');
+var users = require('../Models/UserDetail');
+var admin = require('../Models/AdminDetails');
+
 
 
 /* GET home page. */
-
 router.get('/Home', (req, res) => {
-  user.find({}, req.body, (err, result) => {
-    console.log("working...");
-    console.log(result);
-    res.render('Homepage.ejs', { result: result })
-  })
+  res.render('Homepage.ejs')
+})
 
-  // res.render('Homepage.ejs');
+router.get('/signup', (req, res) => {
+  var error = req.flash('error')[0];
+  console.log(error);
+  return res.render('signup.ejs', { error });
+})
+
+router.post('/signup', (req, res) => {
+  if(req.body.password===req.body.confirmpassword)
+  {
+    admin.create(req.body, (err, success) => {
+      if (err) console.log(err);
+      console.log(req.body);
+      console.log(req.body);
+      console.log("user created successfully");
+      res.redirect('/login')
+    })
+  }
+  else
+  {
+    req.flash('error', 'Passwords mismatch');
+    return res.redirect('/signup');
+  }
+ 
+})
+
+router.get('/login', (req, res) => {
+  var error = req.flash('error')[0];
+  console.log(error);
+  return res.render('login.ejs', { error });
+})
+
+router.post('/login', (req, res) => {
+  console.log("running now")
+  var { email, password } = req.body;
+  if (!email || !password) {
+    req.flash('error', 'Email/Password required');
+    console.log("running now 1")
+    return res.redirect('/login');
+  }
+  admin.findOne({ email }, (err, user) => {
+    console.log("working 1");
+    if (err) return next(err);
+    if (!user) {
+      console.log("working 2");
+
+      req.flash('error', 'No admin found with this email');
+
+      return res.redirect('/login');
+    }
+    if (user) {
+      console.log("working 3");
+
+      // var authorise = user.verifypassword(password)
+      // if (!authorise) {
+      //   return res.redirect('/Adminpanel')
+      // }
+
+      if ((user.password) == password) {
+        console.log("password match")
+        var token =  user.signToken();
+        console.log(token)
+        res.redirect('/Adminpanel')
+
+        // if (err) console.log(err);
+        // console.log(req.body);
+        // if (!req.session.adminId) {
+        //   console.log(req.session);
+        //   console.log("no session created");
+        //   req.session.adminId = user._id;
+        //   req.session.cart = [];
+        //   return res.redirect('/AdminPanel');
+        // }
+        // else if (req.session.userId) {
+        //   console.log("session already created");
+        //   console.log(req.session.cart);
+        //   console.log("hi 1");
+        //   console.log(req.session);
+        //   return res.redirect('/AdminPanel');
+        // }
+
+
+
+
+      }
+      else {
+        console.log("working 5");
+        req.flash('error', 'Wrong password');
+        return res.redirect('/login');
+      }
+    }
+  });
 });
 
-router.post('/Addpart1', (req, res) => {
-  user.create(req.body, (err, result) => {
+router.get('/AdminPanel', (req, res) => {
+  users.find({}, (err, result) => {
+    res.render('AdminPanel.ejs', { result: result });
 
-    console.log("user created...");
-    res.redirect('/Home')
+  })
+})
+
+router.get('/createUser', (req, res) => {
+  res.render('createUser.ejs');
+})
+
+router.post('/createUser', (req, res) => {
+  users.create(req.body, (err, success) => {
+    if (err) console.log(err);
+    console.log(req.body);
+    console.log("user created successfully");
+    res.redirect('/AdminPanel')
+  })
+})
 
 
+router.get('/:id/editUser', (req, res) => {
+  console.log(req.params.id);
+  var id = req.params.id;
+  users.findById(id, (err, result) => {
+    console.log(result)
+    res.render('editUser.ejs', { result });
+  })
+});
+
+router.post('/:id/editUser', (req, res) => {
+  console.log("its working now")
+  var id = req.params.id;
+  users.findByIdAndUpdate(id, req.body, (err, result) => {
+    res.redirect('/AdminPanel');
+  })
+});
+
+router.get('/:id/deleteUser', (req, res) => {
+  var id = req.params.id;
+  users.findByIdAndDelete(id, (err, result) => {
+    res.redirect('/AdminPanel');
+  })
+})
+
+router.get('/logout', (req, res) => {
+  res.clearCookie('connect-sid');
+  res.redirect('/Home');
+});
+
+
+router.get('/dashboard/filter', (req, res) => {
+  
+  var username = req.query.username;
+  console.log(username);
+   users.find({ firstname: new RegExp(username, 'i') }, (err,result)=>
+  {
+    console.log("go go");
+    console.log(result);
+    if(err) console.log(err);
+   return res.render('AdminPanel.ejs', {result:result});
   }
   )
+})
+    
+    
 
-});
+// router.get('/Home', (req, res) => {
+//   user.find({}, req.body, (err, result) => {
+//     console.log("working...");
+//     console.log(result);
+//     res.render('Homepage.ejs', { result: result })
+//   })
+
+//   // res.render('Homepage.ejs');
+// });
+
+// router.post('/Addpart1', (req, res) => {
+//   user.create(req.body, (err, result) => {
+
+//     console.log("user created...");
+//     res.redirect('/Home')
+
+
+//   }
+//   )
+
+// });
 
 
 

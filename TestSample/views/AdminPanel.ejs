@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-dashboard">
+        <div class="dashboard-h">
+            Dashboard
+        </div>
+        <div class="dashboard-main">
+            <div>
+                <h2>Total user count is: <%= result.length %></h2>
+            </div>
+            <div class="dashboard-logout">
+                <div>
+                    <a href="/createUser">
+                        <button>Create User</button>
+                    </a>
+                </div>
+                <div>
+                    <form action="/dashboard/filter" method="get">
+                        <input type="text" placeholder="search" name="username">
+                        <input type="submit">
+                    </form>
+                    
+                </div>
+
+                <div>
+                    <a href="/logout">
+                        <button>Logout</button>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-users-main">
+
+        <% result.forEach((result)=> { %>
+              <div class="user-div">
+                <h3>Name:<%= result.firstname %> <%= result.lastname %></h3>
+                 <span>Phone:<%= result.phone %></span>
+                 <span>Address:<%= result.address %></span>
+                 <div class="button-div-1">
+                    <a href="/<%= result._id %>/editUser">
+                        <button class="button-2">Edit</button>
+                    </a>
+                    <a href="/<%= result._id %>/deleteUser">
+                        <button class="button-2">Delete</button>
+                    </a>
+                 </div>
+            </div>
+
+            <% }) %>
+
+
+
+    </div>
+
+
+</body>
+
+</html>

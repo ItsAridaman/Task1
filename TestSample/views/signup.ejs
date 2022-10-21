@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="signup-container">
+        <h1>Fill your details here</h1>
+        <form class="form-1" action="/signup" method="post">
+            <% if(error) {%>
+                <p class="error-login">
+                    <%= error %>
+                </p>
+                <% } %>
+                    <div class="signup-inside">
+                        <label>
+                            Name
+                        </label>
+                        <input type="text" placeholder="eg:-Rohan jain" name="name">
+                    </div>
+                    <div class="signup-inside">
+                        <label>
+                            Email
+                        </label>
+                        <input type="email" placeholder="peter@xyz.com" name="email">
+                    </div>
+                    <div class="signup-inside">
+                        <label>
+                            Password
+                        </label>
+                        <input type="password" placeholder="" name="password">
+                    </div>
+                    <div class="signup-inside">
+                        <label>
+                            Confirm Password
+                        </label>
+                        <input type="password" placeholder="" name="confirmpassword">
+                    </div>
+                    <input class="submit-1" type="submit">
+        </form>
+    </div>
+
+</body>
+
+</html>

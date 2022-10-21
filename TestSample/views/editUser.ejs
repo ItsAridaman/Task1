@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="signup-container">
+        <h1>Fill the user details</h1>
+        <form class="form-1" action="/<%= result._id %>/editUser" method="post">
+
+
+            <div class="signup-inside">
+                <div class="common-1">
+                    <div class="mydiv-1">
+                        <label>
+                            First name
+                        </label>
+                        <input type="text" value="<%= result.firstname %>" name="firstname">
+                    </div>
+
+                    <div class="mydiv-2">
+                        <label>
+                            Last name
+                        </label>
+                        <input type="text" value="<%= result.lastname %>" name="lastname">
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="signup-inside">
+                <label>
+                    Phone
+                </label>
+                <input type="number" value="<%= result.phone %>" name="phone">
+            </div>
+            <div class="signup-inside">
+                <label>
+                    Address
+                </label>
+                <input type="text" value="<%= result.address %>" name="address">
+            </div>
+
+            <input class="submit-1" type="submit">
+        </form>
+    </div>
+
+</body>
+
+</html>

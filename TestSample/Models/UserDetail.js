@@ -3,10 +3,10 @@ var Schema = mongoose.Schema;
 
 var UserDetailSchema= new Schema(
     {
-        Cityname:{type:String},
-       Name:{type:String},
-       PhoneNumber:{type:Number},
-       Image:{type:String}
+        firstname:{type:String, required:true},
+       lastname:{type:String, required:true},
+       phone:{type:Number, required:true},
+       address:{type:String, required:true}
     }
 )
 
