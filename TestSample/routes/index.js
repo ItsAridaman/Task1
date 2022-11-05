@@ -99,10 +99,17 @@ router.get('/AdminPanel', (req, res) => {
 })
 
 router.get('/createUser', (req, res) => {
-    res.render('createUser.ejs');
+    res.render('createUser.ejs',{errors:validationResult(req).array()});
 })
 
-router.post('/createUser', (req, res) => {
+router.post('/createUser',[body('email','invalid email address').isEmail(),body('phone','Invalid phone number').isLength({ min: 5 })], (req, res) => {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.render('createUser.ejs', { errors: errors.array() });
+  }
+
+
 
   users.create(req.body, (err, success) => {
     if(err) console.log(err)
