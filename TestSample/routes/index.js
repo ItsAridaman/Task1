@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var users = require('../Models/UserDetail');
 var admin = require('../Models/AdminDetails');
+var bcrypt= require('bcrypt');
+const { body, validationResult } = require('express-validator');
+
+
 
 
 
@@ -20,8 +24,8 @@ router.post('/signup', (req, res) => {
     admin.create(req.body, (err, success) => {
       if (err) console.log(err);
       console.log(req.body);
-      console.log(req.body);
       console.log("user created successfully");
+
       res.redirect('/login')
     })
   }
@@ -65,10 +69,16 @@ router.post('/login', (req, res) => {
       // }
 
       if ((user.password) == password) {
+        req.session.adminId = user._id;
+        req.session.Myuser=user;
         console.log("password match")
+        // req.userdetail = user;
+        // res.locals.userdetail = user;
+        req.session.admininfo=user;
+
         var token = user.signToken();
         console.log(token)
-        res.redirect('/Adminpanel')
+        res.redirect('/AdminPanel');
 
       }
       else {
@@ -82,23 +92,35 @@ router.post('/login', (req, res) => {
 
 router.get('/AdminPanel', (req, res) => {
   users.find({}, (err, result) => {
-    res.render('AdminPanel.ejs', { result: result });
+    let myData=req.session.Myuser;
+    res.render('AdminPanel.ejs', { result: result, myData: myData});
 
   })
 })
 
 router.get('/createUser', (req, res) => {
-  res.render('createUser.ejs');
+    res.render('createUser.ejs');
 })
 
 router.post('/createUser', (req, res) => {
+
   users.create(req.body, (err, success) => {
-    if (err) console.log(err);
-    console.log(req.body);
+    if(err) console.log(err)
     console.log("user created successfully");
     res.redirect('/AdminPanel')
   })
 })
+
+
+// router.post('/createUser', (req, res) => {
+//   users.create(req.body, (err, success) => {
+//     if (err) console.log(err);
+//     console.log(req.body);
+//     console.log("user created successfully");
+//     res.redirect('/AdminPanel')
+
+//   })
+// })
 
 
 router.get('/:id/editUser', (req, res) => {
@@ -135,11 +157,11 @@ router.get('/dashboard/filter', (req, res) => {
 
   var username = req.query.username;
   console.log(username);
-  users.find({ firstname: new RegExp(username, 'i') }, (err, result) => {
+  users.find({ name: new RegExp(username, 'i') }, (err, result) => {
     console.log("go go");
     console.log(result);
     if (err) console.log(err);
-    return res.render('AdminPanel.ejs', { result: result });
+    return res.render('AdminPanel.ejs', { result: result, myData:req.session.Myuser});
   }
   )
 })

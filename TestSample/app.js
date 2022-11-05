@@ -45,6 +45,7 @@ app.use(session({
   })}));
 
 
+// app.use(auth.userInfo);
 app.use(flash());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -11,13 +11,17 @@
 </head>
 
 <body>
+
+    <h8>Logged in as: <%= myData.name %>
+    </h8>
     <div class="container-dashboard">
         <div class="dashboard-h">
             Dashboard
         </div>
         <div class="dashboard-main">
             <div>
-                <h2>Total user count is: <%= result.length %></h2>
+                <h2>Total user count is: <%= result.length %>
+                </h2>
             </div>
             <div class="dashboard-logout">
                 <div>
@@ -30,7 +34,7 @@
                         <input type="text" placeholder="search" name="username">
                         <input type="submit">
                     </form>
-                    
+
                 </div>
 
                 <div>
@@ -39,32 +43,93 @@
                     </a>
                 </div>
             </div>
-            
+
         </div>
 
     </div>
 
 
-    <div class="dashboard-users-main">
+    <!-- <div class="dashboard-users-main">
 
         <% result.forEach((result)=> { %>
-              <div class="user-div">
-                <h3>Name:<%= result.firstname %> <%= result.lastname %></h3>
-                 <span>Phone:<%= result.phone %></span>
-                 <span>Address:<%= result.address %></span>
-                 <div class="button-div-1">
+            <div class="user-div">
+                <h3>Name:<%= result.firstname %>
+                        <%= result.lastname %>
+                </h3>
+                <span>Phone:<%= result.phone %></span>
+                <span>Address:<%= result.address %></span>
+                <div class="button-div-1">
                     <a href="/<%= result._id %>/editUser">
                         <button class="button-2">Edit</button>
                     </a>
                     <a href="/<%= result._id %>/deleteUser">
                         <button class="button-2">Delete</button>
                     </a>
-                 </div>
+                </div>
+
+
             </div>
 
             <% }) %>
 
 
+
+    </div> -->
+
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>designation</th>
+                    <th>gender</th>
+                    <th>course</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+
+            <% result.forEach((result)=> { %>
+                <tr>
+                    <td>
+                        <%= result.name %>
+                    </td>
+                    <td>
+                        <%= result.email %>
+                    </td>
+                    <td>
+                        <%= result.phone %>
+                    </td>
+                    <td>
+                        <%= result.designation %>
+                    </td>
+                    <td>
+                        <%= result.gender %>
+                    </td>
+                    <td>
+                        <%= result.course %>
+                    </td>
+                    <td>
+                        <div class="button-div-1">
+                            <a href="/<%= result._id %>/editUser">
+                                <button class="button-2">Edit</button>
+                            </a>
+                            <a href="/<%= result._id %>/deleteUser">
+                                <button class="button-2">Delete</button>
+                            </a>
+                        </div>
+                    </td>
+                    
+                   
+
+                </tr>
+
+
+                <% }) %>
+        </table>
 
     </div>
 
