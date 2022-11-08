@@ -7,8 +7,8 @@ var jwt = require('jsonwebtoken');
 var AdminDetails = new Schema(
     {
         name: { type: String, required: true },
-        email: { type: String, required:true,match:/@/,lowercase:true, trim:true },
-        password: { type: String, required: true, minlength: 5, maxlength: 9},
+        email: { type: String, required: true, match: /@/, lowercase: true, trim: true },
+        password: { type: String, required: true, minlength: 5, maxlength: 9 },
     }
 )
 
@@ -18,37 +18,32 @@ AdminDetails.pre('save', function (next) {
         console.log(this.password);
 
 
-        bcrypt.hash(this.password, 10, function (err, hash) {
+        bcrypt.hash(this.password, 10, (err, hash) => {
             console.log("yes it is also running")
             console.log(hash);
             if (err) return next(err);
             this.password = hash;
             console.log(hash);
-            return next();
-        });
+            return next()
+        })
 
     }
     else {
-        next()
+        next();
     }
 
 });
 
 
 
-AdminDetails.methods.verifypassword = function (password) {
-    try {
-        var result = bcrypt.compare(password, this.password);
-        return result;
-    }
-    catch (error) {
-        return error;
-    }
-    bcrypt.compare()
+AdminDetails.methods.verifypassword = function (password, cb) {
+    bcrypt.compare(password, this.password, (err, result) => {
+        return cb(err, result);
+    })
 }
 
 
-AdminDetails.methods.signToken =function () {
+AdminDetails.methods.signToken = function () {
     var payload = { userId: this.id, email: this.email };
     try {
         var token = jwt.sign(payload, "thisisthesecret");

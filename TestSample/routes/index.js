@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var users = require('../Models/UserDetail');
-var admin = require('../Models/AdminDetails');
-var bcrypt= require('bcrypt');
+var Admin = require('../Models/AdminDetails');
 const { body, validationResult } = require('express-validator');
 
 
@@ -21,7 +20,7 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res) => {
   if (req.body.password === req.body.confirmpassword) {
-    admin.create(req.body, (err, success) => {
+    Admin.create(req.body, (err, success) => {
       if (err) console.log(err);
       console.log(req.body);
       console.log("user created successfully");
@@ -50,7 +49,7 @@ router.post('/login', (req, res) => {
     console.log("running now 1")
     return res.redirect('/login');
   }
-  admin.findOne({ email }, (err, user) => {
+  Admin.findOne({ email }, (err, user) => {
     console.log("working 1");
     if (err) return next(err);
     if (!user) {
@@ -63,46 +62,71 @@ router.post('/login', (req, res) => {
     if (user) {
       console.log("working 3");
 
-      // var authorise = user.verifypassword(password)
-      // if (!authorise) {
-      //   return res.redirect('/Adminpanel')
-      // }
+      user.verifypassword(password, (err, result) => {
+        
+        if (err) console.log(err);
+        console.log("work 1");
+        if (!result) {
+          console.log("work 2-error");
+          req.flash('error', 'password incorrect');
+          console.log(result)
+         return res.redirect('/login');
+        }
+        console.log("work 3-success");
 
-      if ((user.password) == password) {
+        console.log(result)
+
         req.session.adminId = user._id;
-        req.session.Myuser=user;
+        req.session.Myuser = user;
         console.log("password match")
         // req.userdetail = user;
         // res.locals.userdetail = user;
-        req.session.admininfo=user;
+        req.session.admininfo = user;
 
         var token = user.signToken();
         console.log(token)
-        res.redirect('/AdminPanel');
+       return res.redirect('/AdminPanel');
 
-      }
-      else {
-        console.log("working 5");
-        req.flash('error', 'Wrong password');
-        return res.redirect('/login');
-      }
+      })
+
+
+
+      // .................................
+      //       if ((user.password) == password) {
+      //         req.session.adminId = user._id;
+      //         req.session.Myuser=user;
+      //         console.log("password match")
+      //         // req.userdetail = user;
+      //         // res.locals.userdetail = user;
+      //         req.session.admininfo=user;
+
+      //         var token = user.signToken();
+      //         console.log(token)
+      //         res.redirect('/AdminPanel');
+
+      //       }
+      //       else {
+      //         console.log("working 5");
+      //         req.flash('error', 'Wrong password');
+      //         return res.redirect('/login');
+      //       }
     }
   });
 });
 
 router.get('/AdminPanel', (req, res) => {
   users.find({}, (err, result) => {
-    let myData=req.session.Myuser;
-    res.render('AdminPanel.ejs', { result: result, myData: myData});
+    let myData = req.session.Myuser;
+    res.render('AdminPanel.ejs', { result: result, myData: myData });
 
   })
 })
 
 router.get('/createUser', (req, res) => {
-    res.render('createUser.ejs',{errors:validationResult(req).array()});
+  res.render('createUser.ejs', { errors: validationResult(req).array() });
 })
 
-router.post('/createUser',[body('email','invalid email address').isEmail(),body('phone','Invalid phone number').isLength({ min: 5 })], (req, res) => {
+router.post('/createUser', [body('email', 'invalid email address').isEmail(), body('phone', 'Invalid phone number').isLength({ min: 5 })], (req, res) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -112,7 +136,7 @@ router.post('/createUser',[body('email','invalid email address').isEmail(),body(
 
 
   users.create(req.body, (err, success) => {
-    if(err) console.log(err)
+    if (err) console.log(err)
     console.log("user created successfully");
     res.redirect('/AdminPanel')
   })
@@ -168,7 +192,7 @@ router.get('/dashboard/filter', (req, res) => {
     console.log("go go");
     console.log(result);
     if (err) console.log(err);
-    return res.render('AdminPanel.ejs', { result: result, myData:req.session.Myuser});
+    return res.render('AdminPanel.ejs', { result: result, myData: req.session.Myuser });
   }
   )
 })
